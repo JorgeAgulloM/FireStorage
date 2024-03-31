@@ -3,6 +3,7 @@ package com.softyorch.firestorage
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.softyorch.firestorage.databinding.ActivityMainBinding
+import com.softyorch.firestorage.ui.compose.upload.UploadComposeActivity
 import com.softyorch.firestorage.ui.xml.upload.UploadXmlActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             btnNavigateToCompose.setOnClickListener {
-                
+                startActivity(UploadComposeActivity.create(this@MainActivity))
             }
         }
     }
