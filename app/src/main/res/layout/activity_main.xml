@@ -7,12 +7,50 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textStyle="italic"
+        android:textColor="@color/green"
+        android:layout_marginTop="24dp"
+        android:textSize="50sp"
+        android:gravity="center"
+        android:text="Firebase\nStorage🚀"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnNavigateToXml"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="36dp"
+        android:backgroundTint="@color/white"
+        android:text="Go To Xml"
+        android:textColor="@color/yellow"
+        app:layout_constraintBottom_toTopOf="@+id/btnNavigateToCompose"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:rippleColor="@color/yellow"
+        app:strokeColor="@color/yellow"
+        app:strokeWidth="2dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnNavigateToCompose"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="36dp"
+        android:backgroundTint="@color/white"
+        android:text="Go To Compose"
+        android:textColor="@color/green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnNavigateToXml"
+        app:rippleColor="@color/green"
+        app:strokeColor="@color/green"
+        app:strokeWidth="2dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
