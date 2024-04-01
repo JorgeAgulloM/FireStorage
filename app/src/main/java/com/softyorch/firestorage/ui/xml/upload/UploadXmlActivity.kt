@@ -6,9 +6,11 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.softyorch.firestorage.databinding.ActivityUploadXmlBinding
+import com.softyorch.firestorage.databinding.DialogImageSelectorBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.text.SimpleDateFormat
@@ -27,8 +29,13 @@ class UploadXmlActivity : AppCompatActivity() {
     private val viewModel: UploadXmlViewModel by viewModels()
 
     private lateinit var uri: Uri
-    private val intentLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) {
+    private val intentCameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) {
         if (it && uri.path?.isNotEmpty() == true) {
+            viewModel.uploadBasicImage(uri)
+        }
+    }
+    private val intentGalleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let {
             viewModel.uploadBasicImage(uri)
         }
     }
@@ -46,13 +53,37 @@ class UploadXmlActivity : AppCompatActivity() {
 
     private fun initListeners() {
         binding.fabImage.setOnClickListener {
-            takePhoto()
+            showImageDialog()
         }
+    }
+
+    private fun showImageDialog() {
+        val dialogBinding = DialogImageSelectorBinding.inflate(layoutInflater)
+        val alertDialog = AlertDialog.Builder(this).apply {
+            setView(dialogBinding.root)
+        }.create()
+
+        dialogBinding.apply {
+            btnTakePhoto.setOnClickListener {
+                takePhoto()
+                alertDialog.dismiss()
+            }
+            btnTakeGallery.setOnClickListener {
+                getImageFromGallery()
+                alertDialog.dismiss()
+            }
+        }
+        alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        alertDialog.show()
+    }
+
+    private fun getImageFromGallery() {
+        intentGalleryLauncher.launch("image/*")
     }
 
     private fun takePhoto() {
         generateUri()
-        intentLauncher.launch(uri)
+        intentCameraLauncher.launch(uri)
     }
 
     private fun generateUri() {
