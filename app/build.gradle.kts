@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("dagger.hilt.android.plugin")
     id("kotlin-kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -43,6 +44,9 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.0"
+    }
+    kotlin {
+        jvmToolchain(8)
     }
 }
 
