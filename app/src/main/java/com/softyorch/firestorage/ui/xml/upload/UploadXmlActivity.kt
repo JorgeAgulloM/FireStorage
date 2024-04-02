@@ -9,9 +9,16 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.bumptech.glide.Glide
 import com.softyorch.firestorage.databinding.ActivityUploadXmlBinding
 import com.softyorch.firestorage.databinding.DialogImageSelectorBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -31,13 +38,21 @@ class UploadXmlActivity : AppCompatActivity() {
     private lateinit var uri: Uri
     private val intentCameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) {
         if (it && uri.path?.isNotEmpty() == true) {
-            viewModel.uploadBasicImage(uri)
+            viewModel.uploadAndGetImage(uri) { downloadUri ->
+                showNewImage(downloadUri)
+            }
         }
     }
     private val intentGalleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
-            viewModel.uploadBasicImage(uri)
+            viewModel.uploadAndGetImage(uri) { downloadUri ->
+                showNewImage(downloadUri)
+            }
         }
+    }
+
+    private fun showNewImage(downloadUri: Uri) {
+        Glide.with(this).load(downloadUri).into(binding.ivImage)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +64,21 @@ class UploadXmlActivity : AppCompatActivity() {
 
     private fun initUI() {
         initListeners()
+        initUiState()
+    }
+
+    private fun initUiState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isLoading.collect {
+                    binding.pbImage.isVisible = it
+                    if (it) {
+                        binding.ivPlaceHolder.isGone = true
+                        binding.ivImage.setImageDrawable(null)
+                    }
+                }
+            }
+        }
     }
 
     private fun initListeners() {
