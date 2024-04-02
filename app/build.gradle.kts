@@ -64,6 +64,9 @@ dependencies {
     // Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
     // Compose
     implementation(platform("androidx.compose:compose-bom:2023.01.00"))
     implementation("androidx.compose.ui:ui")
