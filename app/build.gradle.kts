@@ -61,6 +61,9 @@ dependencies {
     // Activities
     implementation("androidx.activity:activity-ktx:1.7.2")
 
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
     // Compose
     implementation(platform("androidx.compose:compose-bom:2023.01.00"))
     implementation("androidx.compose.ui:ui")
