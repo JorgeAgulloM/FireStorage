@@ -56,6 +56,14 @@ class StorageService @Inject constructor(
         return reference.delete().isSuccessful
     }
 
+    private fun uploadImageWithProgress(uri: Uri): Double {
+        val reference = storage.reference.child(fakeUserId).child("/${uri.lastPathSegment}")
+        var progress: Double = 0.0
+        reference.putFile(uri).addOnProgressListener { uploadTask ->
+            progress = (100.0 * uploadTask.bytesTransferred) / uploadTask.totalByteCount
+        }
+        return progress
+    }
 
     private fun downloadImage(
         uploadTask: UploadTask.TaskSnapshot,
