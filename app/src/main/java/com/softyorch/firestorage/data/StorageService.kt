@@ -1,12 +1,9 @@
 package com.softyorch.firestorage.data
 
 import android.content.Context
-import android.content.pm.PackageInfo
 import android.net.Uri
 import android.os.Build
 import android.util.Log
-import androidx.core.content.pm.PackageInfoCompat
-import com.google.firebase.storage.BuildConfig
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
@@ -53,6 +50,11 @@ class StorageService @Inject constructor(
                     cancellableContinuation.resumeWithException(it)
                 }
         }
+
+    private fun removeImage(pathImage: String): Boolean {
+        val reference = storage.reference.child(pathImage)
+        return reference.delete().isSuccessful
+    }
 
 
     private fun downloadImage(
