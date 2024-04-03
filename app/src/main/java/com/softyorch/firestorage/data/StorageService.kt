@@ -1,12 +1,18 @@
 package com.softyorch.firestorage.data
 
+import android.content.Context
+import android.content.pm.PackageInfo
 import android.net.Uri
+import android.os.Build
 import android.util.Log
+import androidx.core.content.pm.PackageInfoCompat
+import com.google.firebase.storage.BuildConfig
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storageMetadata
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
@@ -14,7 +20,10 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class StorageService @Inject constructor(private val storage: FirebaseStorage) {
+class StorageService @Inject constructor(
+    private val storage: FirebaseStorage,
+    @ApplicationContext private val context: Context
+) {
 
     private val fakeUserId = "a98ha789dgyva087ga09a8fya98f"
 
@@ -68,8 +77,15 @@ class StorageService @Inject constructor(private val storage: FirebaseStorage) {
     }
 
     private fun setMetaData(): StorageMetadata = storageMetadata {
+        val name = context.packageName
+        val version = context.packageManager.getPackageInfo(name, 0).versionName
+
         contentType = "image/jpeg"
         setCustomMetadata("date", System.currentTimeMillis().toString())
-        setCustomMetadata("app", "test_fire_storage")
+        setCustomMetadata("app", name)
+        setCustomMetadata("version", version)
+        setCustomMetadata("brand", Build.BRAND)
+        setCustomMetadata("device", Build.MODEL)
+        setCustomMetadata("sdk", Build.VERSION.SDK_INT.toString())
     }
 }
