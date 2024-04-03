@@ -51,7 +51,7 @@ class StorageService @Inject constructor(
                 }
         }
 
-    private suspend fun getAllImage(): List<Uri> {
+    suspend fun getAllImages(): List<Uri> {
         val reference = storage.reference.child(fakeUserId)
 
         return reference.listAll().await().items.map { it.downloadUrl.await() }
