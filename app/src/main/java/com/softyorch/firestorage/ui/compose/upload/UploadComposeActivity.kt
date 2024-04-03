@@ -35,12 +35,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -52,6 +54,7 @@ import androidx.core.content.FileProvider
 import coil.compose.AsyncImage
 import com.softyorch.firestorage.R
 import com.softyorch.firestorage.databinding.ActivityUploadComposeBinding
+import com.softyorch.firestorage.ui.compose.list.ListComposeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.text.SimpleDateFormat
@@ -200,6 +203,17 @@ class UploadComposeActivity : AppCompatActivity() {
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
+            val context = LocalContext.current
+            OutlinedButton(
+                onClick = { startActivity(ListComposeActivity.create(context)) },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = 36.dp)
+                    .align(CenterHorizontally),
+                border = BorderStroke(2.dp, colorResource(R.color.green)),
+                shape = RoundedCornerShape(42)
+            ) {
+                Text(text = "Navigate To List", color = colorResource(R.color.green))
+            }
         }
     }
 
