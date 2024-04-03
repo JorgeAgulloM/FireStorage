@@ -51,6 +51,12 @@ class StorageService @Inject constructor(
                 }
         }
 
+    private suspend fun getAllImage(): List<Uri> {
+        val reference = storage.reference.child(fakeUserId)
+
+        return reference.listAll().await().items.map { it.downloadUrl.await() }
+    }
+
     private fun removeImage(pathImage: String): Boolean {
         val reference = storage.reference.child(pathImage)
         return reference.delete().isSuccessful
