@@ -17,6 +17,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.softyorch.firestorage.databinding.ActivityUploadXmlBinding
 import com.softyorch.firestorage.databinding.DialogImageSelectorBinding
+import com.softyorch.firestorage.ui.xml.list.ListXmlActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
@@ -72,13 +73,19 @@ class UploadXmlActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isLoading.collect {
-                    binding.pbImage.isVisible = it
-                    if (it) {
-                        binding.ivPlaceHolder.isGone = true
-                        binding.ivImage.setImageDrawable(null)
+                    binding.apply {
+                        pbImage.isVisible = it
+                        if (it) {
+                            ivPlaceHolder.isGone = true
+                            ivImage.setImageDrawable(null)
+                        }
                     }
                 }
             }
+        }
+
+        binding.btnNavigateToList.setOnClickListener {
+            startActivity(ListXmlActivity.create(this))
         }
     }
 
